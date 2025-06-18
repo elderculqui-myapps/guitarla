@@ -11,6 +11,10 @@ jobs:
     environment: Default
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -18,12 +22,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: SonarQube Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
