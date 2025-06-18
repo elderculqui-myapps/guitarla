@@ -1,0 +1,81 @@
+name: Build and Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    environment: Default
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs: sonarqube
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Use Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
+  #     - run: npm install
+  #     - run: npm test
+
+  # build-and-deploy:
+  #   runs-on: ubuntu-latest
+  #   environment: Default
+  #   needs: test
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Login to Nexus Registry
+  #       run: echo "${{ secrets.NEXUS_PASSWORD }}" | docker login ${{ secrets.NEXUS_REGISTRY }} -u ${{ secrets.NEXUS_USERNAME }} --password-stdin
+
+  #     - name: Build Docker Image
+  #       run: docker build -t ${{ secrets.NEXUS_REGISTRY }}/testsonarnode:latest .
+
+  #     - name: Push Image to Nexus
+  #       run: docker push ${{ secrets.NEXUS_REGISTRY }}/testsonarnode:latest
+
+  #     - name: Copy deploy script to VPS
+  #       uses: appleboy/scp-action@v0.1.3
+  #       with:
+  #         host: ${{ secrets.VPS_HOST }}
+  #         username: ${{ secrets.VPS_USER }}
+  #         key: ${{ secrets.VPS_SSH_KEY }}
+  #         source: "./deploy.sh"
+  #         target: "/${{ secrets.VPS_USER }}/testsonarnode/"
+
+  #     - name: Run deploy script via SSH
+  #       uses: appleboy/ssh-action@v1.0.0
+  #       with:
+  #         host: ${{ secrets.VPS_HOST }}
+  #         username: ${{ secrets.VPS_USER }}
+  #         key: ${{ secrets.VPS_SSH_KEY }}
+  #         script: |
+  #           export NEXUS_USERNAME=${{ secrets.NEXUS_USERNAME }}
+  #           export NEXUS_PASSWORD=${{ secrets.NEXUS_PASSWORD }}
+  #           mkdir -p /root/testsonarnode
+  #           chmod +x /root/testsonarnode/deploy.sh
+  #           /root/testsonarnode/deploy.sh
