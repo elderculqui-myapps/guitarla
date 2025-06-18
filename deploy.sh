@@ -25,4 +25,4 @@ docker pull $IMAGE
 
 # Ejecutar contenedor
 echo "Ejecutando contenedor..."
-docker run -d --name $APP_NAME -p 5700:3000 $IMAGE
+docker run -d --name $APP_NAME -p 5700:80 $IMAGE
