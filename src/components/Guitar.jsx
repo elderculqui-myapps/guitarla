@@ -1,4 +1,5 @@
 export default function Guitar({ guitar, addToCard }) {
+    const notUsedForOtherUser = 'Is example';
     
     return (
         <div className="col-md-6 col-lg-4 my-4 row align-items-center">
