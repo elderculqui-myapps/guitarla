@@ -11,7 +11,7 @@ on:
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
-    environment: Default
+    environment: PRODUCTION
 
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: Default
+    environment: PRODUCTION
     needs: sonarqube
 
     steps:
