@@ -1,5 +1,4 @@
 export default function Guitar({ guitar, addToCard }) {
-    const constNotUsed = "This is a constant that is not used anywhere in the code";
     return (
         <div className="col-md-6 col-lg-4 my-4 row align-items-center">
             <div className="col-4">
