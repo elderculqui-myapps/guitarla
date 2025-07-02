@@ -1,4 +1,6 @@
 export default function Guitar({ guitar, addToCard }) {
+    const unusedVariable = "This variable is never used"; // Bug: variable declarada pero no utilizada
+    
     return (
         <div className="col-md-6 col-lg-4 my-4 row align-items-center">
             <div className="col-4">
