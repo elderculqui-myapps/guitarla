@@ -1,4 +1,4 @@
-name: Build and Deploy to VPS
+name: Quality
 
 on:
   push:
